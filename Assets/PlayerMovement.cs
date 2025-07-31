@@ -33,6 +33,9 @@ public class PlayerMovement : MonoBehaviour
 
     public float maxSlopeAngle = 70f;
 
+    private bool isJumping = false;
+    private float jumpCutMultiplier = 0.3f;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -40,6 +43,9 @@ public class PlayerMovement : MonoBehaviour
         moveDir = new Vector3(0, 0, 0);
         col = GetComponent<CapsuleCollider>();
         cam = Camera.main.transform;
+
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
     // Update is called once per frame
@@ -56,8 +62,6 @@ public class PlayerMovement : MonoBehaviour
             float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref turnSmoothVelocity, turnSmoothTime);
             moveRot = new Vector3(0f, angle, 0f);
 
-
-
             moveDir = Quaternion.Euler(0f, targetAngle, 0f) * Vector3.forward;
             if (moveDir.magnitude > 1f)
             {
@@ -67,8 +71,6 @@ public class PlayerMovement : MonoBehaviour
         else
         {
             moveDir = new Vector3(0, 0, 0);
-
-
         }
 
         // check for jump inputs
@@ -105,69 +107,14 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    // function to get the final gravity to be applied to the player, including cancelling any sideways forces the gravity would create from being on a slope
-    // (this involves making a raycast at the player's feet to see the angle of the slope they're standing on, and then doing some math to cancel out any sideways forces that would be created by that slope)
-    private void addGravityButAccountForSlopes()
-    {
-        if (Physics.Raycast(transform.position, Vector3.down, out var hit, groundCheckDistance + col.radius / 2f - 0.1f, groundMask, QueryTriggerInteraction.Ignore))
-        {
-            var collider = hit.collider;
-            float angle = Vector3.Angle(Vector3.up, hit.normal);
-            Vector3 gravityForce = getGravity();
-            float sidewaysForce = gravityForce.magnitude * Mathf.Sin(Mathf.Deg2Rad * angle);
-            Vector3 directionOfSidewaysForce = new Vector3(hit.normal.x, 0, hit.normal.z);
-            directionOfSidewaysForce.Normalize();
-            // get the full force vector pushing the player off the slope and causing them to slide
-            Vector3 sideForceVector = -directionOfSidewaysForce * sidewaysForce;
-            Debug.Log(sideForceVector + gravityForce);
-            rb.AddForce(sideForceVector + gravityForce);
-        }
-        else
-        {
-            rb.AddForce(getGravity());
-        }
-    }
-
     private void FixedUpdate()
     {
         updateIsGrounded();
         // move/rotate
 
         // part 1: get to goal velocity
-        // this whole thing is a bit hacky
-        // ideally increase your velocity in the direction of input by the acceleration parameter
         Vector3 desiredVelocity = projectOnGroundPlane(moveDir) * maxSpeed;
-        //Vector3 moveVelocity = projectOnGroundPlane(moveDir * acceleration);
-        //Vector3 currentHorizontalVelocity = new Vector3(rb.velocity.x, rb.v, rb.velocity.z);
-
-        //// deccelerate in all directions (adding a bit of friction/responsiveness here)
-        //if (currentHorizontalVelocity.magnitude > 1)
-        //{
-        //    // Cap deceleration in cases where velocity is really high (don't want to stop on a dime when moving really fast)
-        //    // this will create a linear deceleration when moving fast (>1 m/s)
-        //    moveVelocity += -currentHorizontalVelocity.normalized * deccelerationConstant;
-        //}
-        //else
-        //{
-        //    // if you're not moving fast, deccellerate exponentially (nice for responsiveness)
-        //    moveVelocity += -currentHorizontalVelocity * deccelerationConstant;
-        //}
-        
-
-        //if ((moveVelocity + currentHorizontalVelocity).magnitude <= currentHorizontalVelocity.magnitude)
-        //{
-        //    // if this change would make us slow down (ie we're going the opposite direction), then just do it
-        //    rb.velocity = moveVelocity + currentHorizontalVelocity + new Vector3(0, rb.velocity.y, 0);
-        //}
-        //else
-        //{
-            // otherwise, accelerate in the direction of input to a max of the max speed parameter
-            rb.velocity = Vector3.MoveTowards(rb.velocity, new Vector3(desiredVelocity.x, rb.velocity.y, desiredVelocity.z), acceleration);
-            //rb.velocity = Vector3.ClampMagnitude(moveVelocity + currentHorizontalVelocity, Mathf.Max(maxSpeed, currentHorizontalVelocity.magnitude)) + new Vector3(0, rb.velocity.y, 0);
-        //}
-
-
-        //rb.MoveRotation(Quaternion.Euler(moveRot));
+        rb.velocity = Vector3.MoveTowards(rb.velocity, new Vector3(desiredVelocity.x, rb.velocity.y, desiredVelocity.z), acceleration);
 
 
         // if on the ground and trying to jump, then jump
@@ -176,19 +123,50 @@ public class PlayerMovement : MonoBehaviour
             rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
             rb.AddForce(new Vector3(0, jumpForce, 0), ForceMode.VelocityChange);
             jumpInput = false;
-
+            isJumping = true;
         }
 
-        addGravityButAccountForSlopes();
+        if(rb.velocity.y < 0)
+        {
+            isJumping = false;
+        }
+
+        if (isJumping && !jumpHeld)
+        {
+            isJumping = false;
+            if(rb.velocity.y > 0)
+            {
+                // do a jump cut
+                rb.AddForce(Vector2.down * rb.velocity.y * (1 - jumpCutMultiplier), ForceMode.Impulse);
+            }
+        }
+
+        rb.AddForce(getGravity());
     }
 
     Vector3 projectOnGroundPlane(Vector3 vector)
     {
-        Debug.Log(groundNormal);
         return vector - groundNormal * Vector3.Dot(vector, groundNormal);
     }
 
     private void OnCollisionStay(Collision collision)
+    {
+        correctSlopeForces(collision);
+    }
+        
+
+    public void OnCollisionEnter(Collision collision)
+    {
+        Vector3 newPos = new Vector3(0,0);
+        foreach (ContactPoint contact in collision.contacts)
+        {
+            newPos += contact.impulse;
+        }
+        rb.MovePosition(rb.position + newPos * Time.deltaTime *0.001f);
+        correctSlopeForces(collision);
+    }
+
+    public void correctSlopeForces(Collision collision)
     {
         Vector3 totalForceNormal = new Vector3();
         for (int i = 0; i < collision.contactCount; i++)
@@ -201,6 +179,12 @@ public class PlayerMovement : MonoBehaviour
         if (contactAngle > 0.01f && contactAngle < maxSlopeAngle)
         {
             rb.AddForce(-new Vector3(totalForceNormal.x, 0f, totalForceNormal.z), ForceMode.Impulse);
+        }
+
+        // if hitting any kind of floor, re-run the grounded check right away to update early
+        if (contactAngle > 0.01f && contactAngle < maxSlopeAngle || totalForceNormal.normalized.y > 0.5f)
+        {
+            updateIsGrounded();
         }
     }
 }
