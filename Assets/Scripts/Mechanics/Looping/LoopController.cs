@@ -94,4 +94,16 @@ public class LoopController : MonoBehaviour
         loopList.RemoveRange(loopTracker + 1, loopList.Count - loopTracker - 1);
         GlobalLoopList.RBList.Remove(rb);
     }
+
+    public void ToggleLoop()
+    {
+        if (objectIsLooping)
+        {
+            endLoop();
+        }
+        else
+        {
+            startLoop();
+        }
+    }
 }
