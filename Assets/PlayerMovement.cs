@@ -118,8 +118,8 @@ public class PlayerMovement : MonoBehaviour
             Vector3 directionOfSidewaysForce = new Vector3(hit.normal.x, 0, hit.normal.z);
             directionOfSidewaysForce.Normalize();
             // get the full force vector pushing the player off the slope and causing them to slide
-            Vector3 sideForceVector = directionOfSidewaysForce * sidewaysForce;
-
+            Vector3 sideForceVector = -directionOfSidewaysForce * sidewaysForce;
+            Debug.Log(sideForceVector + gravityForce);
             rb.AddForce(sideForceVector + gravityForce);
         }
         else
@@ -188,19 +188,19 @@ public class PlayerMovement : MonoBehaviour
         return vector - groundNormal * Vector3.Dot(vector, groundNormal);
     }
 
-    //private void OnCollisionEnter(Collision collision)
-    //{
-    //    Vector3 totalForceNormal = new Vector3();
-    //    for (int i = 0; i < collision.contactCount; i++)
-    //    {
-    //        ContactPoint point = collision.GetContact(i);
-    //        totalForceNormal += point.normal * point.impulse;
-    //    }
-    //    float contactAngle = Vector2.Angle(totalForceNormal, Vector2.up);
-    //    // if hitting a walkable sloped surface, cancel out most of the horizontal momentum impacted by landing on it
-    //    if (contactAngle > 0.01f && contactAngle < maxSlopeAngle)
-    //    {
-    //        rb.AddForce(-new Vector2(totalForceNormal.x, 0f), ForceMode.Impulse);
-    //    }
-    //}
+    private void OnCollisionStay(Collision collision)
+    {
+        Vector3 totalForceNormal = new Vector3();
+        for (int i = 0; i < collision.contactCount; i++)
+        {
+            ContactPoint point = collision.GetContact(i);
+            totalForceNormal += point.impulse;
+        }
+        float contactAngle = Vector2.Angle(totalForceNormal, Vector2.up);
+        // if hitting a walkable sloped surface, cancel out most of the horizontal momentum impacted by landing on it
+        if (contactAngle > 0.01f && contactAngle < maxSlopeAngle)
+        {
+            rb.AddForce(-new Vector3(totalForceNormal.x, 0f, totalForceNormal.z), ForceMode.Impulse);
+        }
+    }
 }
