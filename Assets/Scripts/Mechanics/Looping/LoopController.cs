@@ -11,6 +11,8 @@ public class LoopController : MonoBehaviour
     private bool loopBackward;
     private bool objectIsLooping;
 
+    private bool wasKinematic;
+
     public bool loopTestSwitch;
 
     // Start is called before the first frame update
@@ -32,7 +34,6 @@ public class LoopController : MonoBehaviour
             // Set Position and rotation
             (Vector3 position, Vector3 velocity, Quaternion rotation) loopItem = loopList[loopTracker];
             rb.MovePosition(loopItem.position);
-            rb.velocity = loopItem.velocity;
             rb.rotation = loopItem.rotation;
 
             // Increment Loop direction
@@ -76,6 +77,8 @@ public class LoopController : MonoBehaviour
     // Loop will always start by going backwards...
     public void startLoop()
     {
+        wasKinematic = rb.isKinematic;
+        rb.isKinematic = true;
         GlobalLoopList.RBList.Add(rb);
         objectIsLooping = true;
         loopBackward = true;
@@ -86,6 +89,8 @@ public class LoopController : MonoBehaviour
     public void endLoop()
     {
         objectIsLooping = false;
+        rb.isKinematic = wasKinematic;
+        rb.velocity = loopList[loopTracker].velocity;
         loopList.RemoveRange(loopTracker + 1, loopList.Count - loopTracker - 1);
         GlobalLoopList.RBList.Remove(rb);
     }
