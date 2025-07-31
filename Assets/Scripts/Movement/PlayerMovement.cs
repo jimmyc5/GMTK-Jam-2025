@@ -20,6 +20,9 @@ public class PlayerMovement : MonoBehaviour
     private bool jumpHeld = false;
 
     private Rigidbody rb;
+    private Animator anim;
+
+    private Transform characterTF;
 
     public LayerMask groundMask;
     public float groundCheckDistance = 0.4f;
@@ -28,6 +31,7 @@ public class PlayerMovement : MonoBehaviour
     public float largeGravityForce;
 
     private bool isGrounded = false;
+    private bool isAlmostGrounded = false;
 
     private Vector3 groundNormal = Vector3.up;
 
@@ -46,6 +50,9 @@ public class PlayerMovement : MonoBehaviour
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+
+        characterTF = transform.GetChild(0);
+        anim = characterTF.GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -88,8 +95,9 @@ public class PlayerMovement : MonoBehaviour
 
 
     // method to check if the player is currently grounded via a sphereCast at the players feet
-    private bool updateIsGrounded()
+    private bool updateGroundedInfo()
     {
+        isAlmostGrounded = Physics.SphereCast(transform.position + new Vector3(0, col.radius / 3f), col.radius / 3f - 0.03f, Vector3.down, out var almostHit, groundCheckDistance + 1.5f, groundMask, QueryTriggerInteraction.Ignore);
         isGrounded = Physics.SphereCast(transform.position + new Vector3(0, col.radius / 3f), col.radius / 3f - 0.03f, Vector3.down, out var hit, groundCheckDistance, groundMask, QueryTriggerInteraction.Ignore);
         groundNormal = hit.normal;
         return isGrounded;
@@ -109,13 +117,27 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        updateIsGrounded();
+        updateGroundedInfo();
         // move/rotate
 
         // part 1: get to goal velocity
         Vector3 desiredVelocity = projectOnGroundPlane(moveDir) * maxSpeed;
         rb.velocity = Vector3.MoveTowards(rb.velocity, new Vector3(desiredVelocity.x, rb.velocity.y, desiredVelocity.z), acceleration);
 
+        // Check the direction of the velocity relative to the orientation of the camera, update the animator...
+        if (desiredVelocity != Vector3.zero)
+        {
+            float angleFromForward = (Vector3.Angle(desiredVelocity, Vector3.forward) * Mathf.Sign(Vector3.Dot(Vector3.up, Vector3.Cross(desiredVelocity, Vector3.forward))) - 180f) * -1;
+            float orientationAngle = Mathf.Deg2Rad * ((angleFromForward - characterTF.rotation.eulerAngles.y + 360) % 360);
+            Debug.Log(orientationAngle);
+            anim.SetFloat("VelocityX", -Mathf.Sin(orientationAngle));
+            anim.SetFloat("VelocityZ", -Mathf.Cos(orientationAngle));
+        }
+        else
+        {
+            anim.SetFloat("VelocityX", 0);
+            anim.SetFloat("VelocityZ", 0);
+        }
 
         // if on the ground and trying to jump, then jump
         if (jumpInput && isGrounded)
@@ -124,17 +146,31 @@ public class PlayerMovement : MonoBehaviour
             rb.AddForce(new Vector3(0, jumpForce, 0), ForceMode.VelocityChange);
             jumpInput = false;
             isJumping = true;
+            anim.SetTrigger("jump");
+            anim.SetBool("isJumping", true);
+            anim.SetBool("isFalling", false);
         }
 
-        if(rb.velocity.y < 0)
+        if(rb.velocity.y < 0 && !isGrounded)
         {
             isJumping = false;
+            anim.SetBool("isJumping", false);
+            if(isAlmostGrounded)
+            {
+                anim.SetBool("isFalling", false);
+            }
+            else
+            {
+                anim.SetBool("isFalling", true);
+            }
         }
 
         if (isJumping && !jumpHeld)
         {
             isJumping = false;
-            if(rb.velocity.y > 0)
+            anim.SetBool("isFalling", true);
+            anim.SetBool("isJumping", false);
+            if (rb.velocity.y > 0)
             {
                 // do a jump cut
                 rb.AddForce(Vector2.down * rb.velocity.y * (1 - jumpCutMultiplier), ForceMode.Impulse);
@@ -184,7 +220,7 @@ public class PlayerMovement : MonoBehaviour
         // if hitting any kind of floor, re-run the grounded check right away to update early
         if (contactAngle > 0.01f && contactAngle < maxSlopeAngle || totalForceNormal.normalized.y > 0.5f)
         {
-            updateIsGrounded();
+            updateGroundedInfo();
         }
     }
 }
