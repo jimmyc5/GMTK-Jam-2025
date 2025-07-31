@@ -9,7 +9,9 @@ public class LoopController : MonoBehaviour
 
     private int loopTracker;
     private bool loopBackward;
-    public bool objectIsLooping; 
+    private bool objectIsLooping;
+
+    public bool loopTestSwitch;
 
     // Start is called before the first frame update
     void Start()
@@ -55,11 +57,26 @@ public class LoopController : MonoBehaviour
             // Add to loop List if object is moving at all and not looping
             loopList.Add((rb.position, rb.velocity, rb.rotation));
         }
+
+        // For loop testing purposes
+        if(loopTestSwitch)
+        {
+            if(objectIsLooping)
+            {
+                endLoop();
+            }
+            else
+            {
+                startLoop();
+            }
+            loopTestSwitch = false;
+        }
     }
 
     // Loop will always start by going backwards...
     public void startLoop()
     {
+        GlobalLoopList.RBList.Add(rb);
         objectIsLooping = true;
         loopBackward = true;
         loopTracker = loopList.Count - 1;
@@ -69,6 +86,7 @@ public class LoopController : MonoBehaviour
     public void endLoop()
     {
         objectIsLooping = false;
-        loopList.RemoveRange(loopTracker + 1, loopList.Count - loopTracker + 1);
+        loopList.RemoveRange(loopTracker + 1, loopList.Count - loopTracker - 1);
+        GlobalLoopList.RBList.Remove(rb);
     }
 }
