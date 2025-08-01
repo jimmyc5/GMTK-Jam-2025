@@ -7,6 +7,7 @@ public class PlayerCauseLoop : MonoBehaviour
     private Collider col;
     private Outline outline;
     private float timer;
+    public LayerMask loopableMask;
 
     // Start is called before the first frame update
     void Start()
@@ -45,7 +46,7 @@ public class PlayerCauseLoop : MonoBehaviour
             return;
         }
 
-        if (!Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out var HitInfo, 100.0f))
+        if (!Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out var HitInfo, 100.0f, loopableMask))
         {
             disableOldOutline();
             col = null;
