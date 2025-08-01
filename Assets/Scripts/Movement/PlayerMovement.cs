@@ -137,7 +137,6 @@ public class PlayerMovement : MonoBehaviour
             characterTF.rotation = Quaternion.RotateTowards(characterTF.rotation, rotationTF.rotation, Time.deltaTime * acceleration * 100);
             float angleFromForward = (Vector3.Angle(desiredVelocity, Vector3.forward) * Mathf.Sign(Vector3.Dot(Vector3.up, Vector3.Cross(desiredVelocity, Vector3.forward))) - 180f) * -1;
             float orientationAngle = Mathf.Deg2Rad * ((angleFromForward - characterTF.rotation.eulerAngles.y + 360) % 360);
-            Debug.Log(orientationAngle);
             desiredXAngle = -Mathf.Sin(orientationAngle);
             desiredZAngle = -Mathf.Cos(orientationAngle);
         }
