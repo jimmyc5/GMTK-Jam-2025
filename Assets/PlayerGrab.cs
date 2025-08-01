@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Animations.Rigging;
 
 public class PlayerGrab : MonoBehaviour
 {
@@ -8,14 +9,16 @@ public class PlayerGrab : MonoBehaviour
 
     private Rigidbody grabbedObject;
 
-    public float forceToThrow = 10f;
+    public float forceToThrow = 1f;
 
     public float grabdistance = 2f;
 
-    public void Start()
-    {
+    private float grabForce = 0.3f;
 
-    }
+    public TwoBoneIKConstraint leftHandConstraint;
+    public TwoBoneIKConstraint rightHandConstraint;
+
+    public float handSpeed;
 
     void Update()
     {
@@ -30,6 +33,7 @@ public class PlayerGrab : MonoBehaviour
                     {
                         if (!grabbedObject)
                         {
+                            grabForce = 0f;
                             grabbedObject = hitObject;
                             hitObject.useGravity = false;
                             hitObject.gameObject.layer = 17;
@@ -54,12 +58,26 @@ public class PlayerGrab : MonoBehaviour
                 grabbedObject = null;
             }
         }
+
+        if (grabbedObject)
+        {
+            leftHandConstraint.weight = Mathf.Min(leftHandConstraint.weight + handSpeed * Time.deltaTime, 1f);
+            rightHandConstraint.weight = Mathf.Min(rightHandConstraint.weight + handSpeed * Time.deltaTime, 1f);
+        }
+        else
+        {
+            leftHandConstraint.weight = Mathf.Max(leftHandConstraint.weight - handSpeed * Time.deltaTime, 0f);
+            rightHandConstraint.weight = Mathf.Max(rightHandConstraint.weight - handSpeed * Time.deltaTime, 0f);
+        }
     }
 
     private void FixedUpdate()
     {
-        if(grabbedObject)
-            grabbedObject.velocity = 0.3f *  (grabPosition.position - grabbedObject.position) / Time.deltaTime;
+        if (grabbedObject)
+        {
+            grabbedObject.velocity = grabForce * (grabPosition.position - grabbedObject.position) / Time.deltaTime;
+            grabForce = Mathf.Min(grabForce + 0.05f, 1f);
+        }
     }
 
 }
