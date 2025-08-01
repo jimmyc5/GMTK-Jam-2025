@@ -21,8 +21,11 @@ public class PlayerMovement : MonoBehaviour
 
     private Rigidbody rb;
     private Animator anim;
+    private float curXAngle;
+    private float curZAngle;
 
     private Transform characterTF;
+    private Transform rotationTF;
 
     public LayerMask groundMask;
     public float groundCheckDistance = 0.4f;
@@ -52,7 +55,10 @@ public class PlayerMovement : MonoBehaviour
         Cursor.visible = false;
 
         characterTF = transform.GetChild(0);
+        rotationTF = transform.GetChild(1);
         anim = characterTF.GetComponent<Animator>();
+        curXAngle = 0;
+        curZAngle = 0;
     }
 
     // Update is called once per frame
@@ -125,19 +131,25 @@ public class PlayerMovement : MonoBehaviour
         rb.velocity = Vector3.MoveTowards(rb.velocity, new Vector3(desiredVelocity.x, rb.velocity.y, desiredVelocity.z), acceleration);
 
         // Check the direction of the velocity relative to the orientation of the camera, update the animator...
+        float desiredXAngle, desiredZAngle;
         if (desiredVelocity != Vector3.zero)
         {
+            characterTF.rotation = Quaternion.RotateTowards(characterTF.rotation, rotationTF.rotation, Time.deltaTime * acceleration * 100);
             float angleFromForward = (Vector3.Angle(desiredVelocity, Vector3.forward) * Mathf.Sign(Vector3.Dot(Vector3.up, Vector3.Cross(desiredVelocity, Vector3.forward))) - 180f) * -1;
             float orientationAngle = Mathf.Deg2Rad * ((angleFromForward - characterTF.rotation.eulerAngles.y + 360) % 360);
             Debug.Log(orientationAngle);
-            anim.SetFloat("VelocityX", -Mathf.Sin(orientationAngle));
-            anim.SetFloat("VelocityZ", -Mathf.Cos(orientationAngle));
+            desiredXAngle = -Mathf.Sin(orientationAngle);
+            desiredZAngle = -Mathf.Cos(orientationAngle);
         }
         else
         {
-            anim.SetFloat("VelocityX", 0);
-            anim.SetFloat("VelocityZ", 0);
+            desiredXAngle = 0;
+            desiredZAngle = 0;
         }
+        curXAngle = Mathf.MoveTowards(curXAngle, desiredXAngle, Time.deltaTime * acceleration * 2);
+        curZAngle = Mathf.MoveTowards(curZAngle, desiredZAngle, Time.deltaTime * acceleration * 2);
+        anim.SetFloat("VelocityX", curXAngle);
+        anim.SetFloat("VelocityZ", curZAngle);
 
         // if on the ground and trying to jump, then jump
         if (jumpInput && isGrounded)
