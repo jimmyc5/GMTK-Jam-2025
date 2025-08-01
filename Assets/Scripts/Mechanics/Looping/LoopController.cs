@@ -95,7 +95,7 @@ public class LoopController : MonoBehaviour
         GlobalLoopList.RBList.Remove(rb);
     }
 
-    public void ToggleLoop()
+    public bool ToggleLoop()
     {
         if (objectIsLooping)
         {
@@ -105,5 +105,6 @@ public class LoopController : MonoBehaviour
         {
             startLoop();
         }
+        return objectIsLooping;
     }
 }
