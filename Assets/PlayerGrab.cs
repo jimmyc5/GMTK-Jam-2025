@@ -20,13 +20,15 @@ public class PlayerGrab : MonoBehaviour
 
     public float handSpeed;
 
+    public LayerMask layersToGrabFrom;
+
     void Update()
     {
         if (Input.GetMouseButtonDown(1) || Input.GetKeyDown(KeyCode.E))
         {
             if (!grabbedObject)
             {
-                if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out var HitInfo, Vector3.Distance(Camera.main.transform.position, transform.position) + grabdistance))
+                if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out var HitInfo, Vector3.Distance(Camera.main.transform.position, transform.position) + grabdistance, layersToGrabFrom))
                 {
                     Rigidbody hitObject = HitInfo.collider.GetComponent<Rigidbody>();
                     if (hitObject && !hitObject.isKinematic)

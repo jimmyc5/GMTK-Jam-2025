@@ -44,6 +44,7 @@ public class PlayerMovement : MonoBehaviour
     private float jumpCutMultiplier = 0.3f;
 
     public AnimationCurve modifyAccelerationForDeceleration;
+    public Vector3 groundVelocity = new Vector3(0, 0, 0);
 
     // Start is called before the first frame update
     void Start()
@@ -108,6 +109,15 @@ public class PlayerMovement : MonoBehaviour
         isAlmostGrounded = Physics.SphereCast(transform.position + new Vector3(0, col.radius / 3f), col.radius / 3f - 0.03f, Vector3.down, out var almostHit, groundCheckDistance + 1.5f, groundMask, QueryTriggerInteraction.Ignore);
         isGrounded = Physics.SphereCast(transform.position + new Vector3(0, col.radius / 3f), col.radius / 3f - 0.03f, Vector3.down, out var hit, groundCheckDistance, groundMask, QueryTriggerInteraction.Ignore);
         groundNormal = hit.normal;
+        Rigidbody groundRb = almostHit.collider?.attachedRigidbody;
+        if (groundRb)
+        {
+            groundVelocity = groundRb.velocity;
+        }
+        else
+        {
+            groundVelocity = new Vector3(0f, 0f, 0f);
+        }
         return isGrounded;
     }
 
@@ -132,7 +142,7 @@ public class PlayerMovement : MonoBehaviour
         Vector3 desiredVelocity = projectOnGroundPlane(moveDir) * maxSpeed;
         float amountInSameDirection = Mathf.Clamp(Vector3.Dot(desiredVelocity.normalized, rb.velocity.normalized) + 1f / 2f, 0f,1f);
         float thisAcceleration = acceleration * modifyAccelerationForDeceleration.Evaluate(amountInSameDirection);
-        rb.velocity = Vector3.MoveTowards(rb.velocity, new Vector3(desiredVelocity.x, rb.velocity.y, desiredVelocity.z), thisAcceleration);
+        rb.velocity = Vector3.MoveTowards(rb.velocity, groundVelocity + new Vector3(desiredVelocity.x, rb.velocity.y, desiredVelocity.z), thisAcceleration);
 
         // Check the direction of the velocity relative to the orientation of the camera, update the animator...
         float desiredXAngle, desiredZAngle;
