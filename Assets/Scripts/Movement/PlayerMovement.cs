@@ -142,7 +142,7 @@ public class PlayerMovement : MonoBehaviour
         Vector3 desiredVelocity = projectOnGroundPlane(moveDir) * maxSpeed;
         float amountInSameDirection = Mathf.Clamp(Vector3.Dot(desiredVelocity.normalized, rb.velocity.normalized) + 1f / 2f, 0f,1f);
         float thisAcceleration = acceleration * modifyAccelerationForDeceleration.Evaluate(amountInSameDirection);
-        rb.velocity = Vector3.MoveTowards(rb.velocity, groundVelocity + new Vector3(desiredVelocity.x, rb.velocity.y, desiredVelocity.z), thisAcceleration);
+        rb.velocity = Vector3.MoveTowards(rb.velocity, new Vector3(desiredVelocity.x + groundVelocity.x, rb.velocity.y, desiredVelocity.z + groundVelocity.z), thisAcceleration);
 
         // Check the direction of the velocity relative to the orientation of the camera, update the animator...
         float desiredXAngle, desiredZAngle;

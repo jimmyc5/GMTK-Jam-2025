@@ -4,5 +4,11 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/LevelTransitionTest1.unity
+    guid: cff75897529038e40ab421ec4642f0b8
+  - enabled: 1
+    path: Assets/Scenes/LevelTransitionTest2.unity
+    guid: 6014daa7ae65bcd488afadce74fe757e
   m_configObjects: {}
