@@ -15,11 +15,24 @@ public class LoopController : MonoBehaviour
 
     public bool loopTestSwitch;
 
+    public AudioSource LoopSFXSource;
+    public AudioSource LoopForwardsSFXSource;
+    private float startingVolume;
+    public float volumeGain;
+
+    public AudioClip loopStartSoundClip;
+
     // Start is called before the first frame update
     void Start()
     {
         loopList = new List<(Vector3 position, Vector3 velocity, Quaternion rotation)>();
         rb = GetComponent<Rigidbody>();
+        if (LoopSFXSource)
+        {
+            startingVolume = LoopSFXSource.volume;
+            LoopSFXSource.volume = 0f;
+            LoopForwardsSFXSource.volume = 0f;
+        }
     }
 
     // Update is called once per frame
@@ -33,8 +46,12 @@ public class LoopController : MonoBehaviour
 
             // Set Position and rotation
             (Vector3 position, Vector3 velocity, Quaternion rotation) loopItem = loopList[loopTracker];
+            if (LoopSFXSource)
+                LoopSFXSource.volume = Mathf.MoveTowards(LoopSFXSource.volume, loopBackward ? startingVolume : 0f, volumeGain / Time.deltaTime);
+            if (LoopForwardsSFXSource)
+                LoopForwardsSFXSource.volume = Mathf.MoveTowards(LoopForwardsSFXSource.volume, !loopBackward ? startingVolume : 0f, volumeGain / Time.deltaTime);
             rb.MovePosition(loopItem.position);
-            rb.rotation = loopItem.rotation;
+            rb.MoveRotation(loopItem.rotation);
 
             // Increment Loop direction
             if (loopBackward)
@@ -52,13 +69,22 @@ public class LoopController : MonoBehaviour
                 loopBackward = !loopBackward;
                 loopTracker = Mathf.Clamp(loopTracker, 0, loopList.Count - 1);
             }
+
         }
         else if(loopList.Count == 0 || Vector3.Distance(rb.position, loopList[loopList.Count - 1].position) > 0.01f || Quaternion.Angle(rb.rotation, loopList[loopList.Count - 1].rotation) > 1f)
         {
             // Add to loop List if object is moving at all and not looping
             loopList.Add((rb.position, rb.velocity, rb.rotation));
         }
+        if (!objectIsLooping)
+        {
+            if (LoopSFXSource)
+            {
+                LoopSFXSource.volume = Mathf.MoveTowards(LoopSFXSource.volume, 0f, volumeGain / Time.deltaTime);
+                LoopForwardsSFXSource.volume = Mathf.MoveTowards(LoopSFXSource.volume, 0f, volumeGain / Time.deltaTime);
+            }
 
+        }
         // For loop testing purposes
         if(loopTestSwitch)
         {
@@ -83,6 +109,7 @@ public class LoopController : MonoBehaviour
         objectIsLooping = true;
         loopBackward = true;
         loopTracker = loopList.Count - 1;
+        SoundManager.instance.PlaySoundClip(loopStartSoundClip, transform.position, 1f, 1.3f);
     }
 
     // Ends loop and removes all items from loop List above the current loop tracker
@@ -93,6 +120,7 @@ public class LoopController : MonoBehaviour
         rb.velocity = loopList[loopTracker].velocity;
         loopList.RemoveRange(loopTracker + 1, loopList.Count - loopTracker - 1);
         GlobalLoopList.RBList.Remove(rb);
+        SoundManager.instance.PlaySoundClip(loopStartSoundClip, transform.position, 1f, 0.9f);
     }
 
     public bool ToggleLoop()

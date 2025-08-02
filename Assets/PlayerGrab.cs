@@ -31,6 +31,10 @@ public class PlayerGrab : MonoBehaviour
     public PhysicMaterial materialToApplyToDroppedThings;
     private Collider itemCollider = null;
 
+    private bool forceGrabNextStep = false;
+
+    public AudioClip grabSound;
+
     void Update()
     {
         if (!goingToHands && (Input.GetMouseButtonDown(1) || Input.GetKeyDown(KeyCode.E)))
@@ -44,11 +48,12 @@ public class PlayerGrab : MonoBehaviour
                     {
                         itemCollider = HitInfo.collider;
                         grabbedObject = hitObject;
-                        grabForce = 0f;
+                        grabForce = 0.2f;
                         grabbedObject = hitObject;
                         hitObject.useGravity = false;
                         hitObject.gameObject.layer = 17;
                         goingToHands = true;
+                        SoundManager.instance.PlaySoundClip(grabSound, transform.position, 0.7f, Random.Range(1.1f,1.2f));
                     }
                 }
             }
@@ -81,6 +86,7 @@ public class PlayerGrab : MonoBehaviour
         itemCollider.material = materialToApplyToDroppedThings;
         grabbedObject = null;
         goingToHands = false;
+        SoundManager.instance.PlaySoundClip(grabSound, transform.position, 0.7f, Random.Range(0.8f, 0.7f));
     }
 
     // will be called when an excessive outside force breaks the joint between the player and what they're holding
@@ -92,11 +98,12 @@ public class PlayerGrab : MonoBehaviour
         grabbedObject = null;
         goingToHands = false;
         itemCollider = null;
+        SoundManager.instance.PlaySoundClip(grabSound, transform.position, 0.7f, Random.Range(0.8f, 0.7f));
     }
 
     private void FixedUpdate()
     {
-        if (goingToHands && Vector3.Distance(grabbedObject.position, grabPosition.position) < 0.01f)
+        if (goingToHands && (Vector3.Distance(grabbedObject.position, grabPosition.position) < 0.01f || forceGrabNextStep))
         {
             joint = gameObject.AddComponent<FixedJoint>() as FixedJoint;
             joint.connectedBody = grabbedObject;
@@ -108,12 +115,22 @@ public class PlayerGrab : MonoBehaviour
             grabbedObject.gameObject.layer = 14;
             grabbedObject.useGravity = true;
             goingToHands = false;
+            forceGrabNextStep = false;
         }
 
         if (goingToHands && grabbedObject)
         {
             grabbedObject.velocity = grabForce * (grabPosition.position - grabbedObject.position) / Time.deltaTime;
-            grabForce = Mathf.Min(grabForce + 0.05f, 1f);
+            
+            if(grabForce >= 1f)
+            {
+                grabbedObject.MovePosition(grabPosition.position);
+                forceGrabNextStep = true;
+            }
+            else
+            {
+                grabForce = Mathf.Min(grabForce + 0.1f, 1f);
+            }
         }
     }
 

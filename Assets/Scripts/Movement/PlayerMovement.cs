@@ -33,7 +33,7 @@ public class PlayerMovement : MonoBehaviour
     public float smallGravityForce;
     public float largeGravityForce;
 
-    private bool isGrounded = false;
+    public bool isGrounded = false;
     private bool isAlmostGrounded = false;
 
     private Vector3 groundNormal = Vector3.up;
@@ -45,6 +45,12 @@ public class PlayerMovement : MonoBehaviour
 
     public AnimationCurve modifyAccelerationForDeceleration;
     public Vector3 groundVelocity = new Vector3(0, 0, 0);
+
+    public AudioClip jumpSound;
+    public AudioClip landingSound;
+
+    private float lastSFXTime = 0f;
+    private float SFXCooldown = 0.1f;
 
     // Start is called before the first frame update
     void Start()
@@ -104,6 +110,7 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetKeyUp(KeyCode.Space))
         {
             jumpHeld = false;
+            jumpInput = false;
         }
     }
 
@@ -111,10 +118,19 @@ public class PlayerMovement : MonoBehaviour
     // method to check if the player is currently grounded via a sphereCast at the players feet
     private bool updateGroundedInfo()
     {
+        bool wasGrounded = isAlmostGrounded;
         isAlmostGrounded = Physics.SphereCast(transform.position + new Vector3(0, col.radius / 3f), col.radius / 3f - 0.03f, Vector3.down, out var almostHit, groundCheckDistance + 1.5f, groundMask, QueryTriggerInteraction.Ignore);
         isGrounded = Physics.SphereCast(transform.position + new Vector3(0, col.radius / 3f), col.radius / 3f - 0.03f, Vector3.down, out var hit, groundCheckDistance, groundMask, QueryTriggerInteraction.Ignore);
         groundNormal = hit.normal;
         Rigidbody groundRb = almostHit.collider?.attachedRigidbody;
+        if(isAlmostGrounded && !wasGrounded)
+        {
+            if (Time.time > lastSFXTime + SFXCooldown)
+            {
+                SoundManager.instance.PlaySoundClip(landingSound, transform.position, 0.8f, Random.Range(0.8f, 1.2f));
+                lastSFXTime = Time.time;
+            }
+        }
         if (groundRb)
         {
             groundVelocity = groundRb.velocity;
@@ -189,6 +205,7 @@ public class PlayerMovement : MonoBehaviour
             anim.SetTrigger("jump");
             anim.SetBool("isJumping", true);
             anim.SetBool("isFalling", false);
+            SoundManager.instance.PlaySoundClip(jumpSound, transform.position, 0.7f, Random.Range(1.1f, 1.2f));
         }
 
         if(rb.velocity.y < 0 && !isGrounded)
@@ -239,10 +256,10 @@ public class PlayerMovement : MonoBehaviour
             newPos += contact.impulse;
         }
         rb.MovePosition(rb.position + newPos * Time.deltaTime *0.001f);
-        correctSlopeForces(collision);
+        correctSlopeForces(collision, true);
     }
 
-    public void correctSlopeForces(Collision collision)
+    public void correctSlopeForces(Collision collision, bool makeNoise = false)
     {
         Vector3 totalForceNormal = new Vector3();
         for (int i = 0; i < collision.contactCount; i++)
@@ -262,5 +279,6 @@ public class PlayerMovement : MonoBehaviour
         {
             updateGroundedInfo();
         }
+
     }
 }

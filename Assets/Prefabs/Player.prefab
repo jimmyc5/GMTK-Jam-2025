@@ -154,6 +154,7 @@ MonoBehaviour:
   groundCheckDistance: 1.2
   smallGravityForce: 25
   largeGravityForce: 40
+  isGrounded: 0
   maxSlopeAngle: 70
   modifyAccelerationForDeceleration:
     serializedVersion: 2
@@ -189,6 +190,8 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   groundVelocity: {x: 0, y: 0, z: 0}
+  jumpSound: {fileID: 8300000, guid: 19c8822429edef84eaa3cb64086ae018, type: 3}
+  landingSound: {fileID: 8300000, guid: b2dc0d1c174a5f04c8db308bbbe4dd9e, type: 3}
 --- !u!114 &2267281406705040083
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -230,6 +233,7 @@ MonoBehaviour:
   breakGrabForce: 1000
   materialToApplyToHeldThings: {fileID: 13400000, guid: 6755da14ca4c2744b8a58eff19497530, type: 2}
   materialToApplyToDroppedThings: {fileID: 13400000, guid: 87c3ab6e94936f240a9104441659b050, type: 2}
+  grabSound: {fileID: 8300000, guid: b6ec30960ba55d34e98ce101db55859a, type: 3}
 --- !u!1 &1561630069637900169
 GameObject:
   m_ObjectHideFlags: 0
@@ -1671,6 +1675,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 125332, guid: 659981ab97d9bb64990767ef5f931f7c, type: 3}
       insertIndex: -1
       addedObject: {fileID: 653813302847848018}
+    - targetCorrespondingSourceObject: {fileID: 133192, guid: 659981ab97d9bb64990767ef5f931f7c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8399543361577098542}
     - targetCorrespondingSourceObject: {fileID: 193740, guid: 659981ab97d9bb64990767ef5f931f7c, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1935403636878486852}
@@ -1689,6 +1696,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 162078, guid: 659981ab97d9bb64990767ef5f931f7c, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6059536402733049186}
+    - targetCorrespondingSourceObject: {fileID: 171282, guid: 659981ab97d9bb64990767ef5f931f7c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 246053573201543482}
   m_SourcePrefab: {fileID: 100100000, guid: 659981ab97d9bb64990767ef5f931f7c, type: 3}
 --- !u!4 &1964167442185360409 stripped
 Transform:
@@ -1751,6 +1761,26 @@ MonoBehaviour:
   - m_Rig: {fileID: 2531242199700921796}
     m_Active: 1
   m_Effectors: []
+--- !u!1 &1964167442185599673 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 133192, guid: 659981ab97d9bb64990767ef5f931f7c, type: 3}
+  m_PrefabInstance: {fileID: 1964167442185728753}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &8399543361577098542
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1964167442185599673}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 419d10cef225d1b40aee330d8c14fa89, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerBase: {fileID: 1964167442185436173}
+  footstepSound: {fileID: 8300000, guid: 5874ea4b76b02e94dbb8da2549d48579, type: 3}
+  movement: {fileID: 5862868341265315099}
 --- !u!1 &1964167442185604079 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 162078, guid: 659981ab97d9bb64990767ef5f931f7c, type: 3}
@@ -1953,6 +1983,26 @@ CharacterJoint:
   m_EnablePreprocessing: 0
   m_MassScale: 1
   m_ConnectedMassScale: 1
+--- !u!1 &1964167442185629667 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 171282, guid: 659981ab97d9bb64990767ef5f931f7c, type: 3}
+  m_PrefabInstance: {fileID: 1964167442185728753}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &246053573201543482
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1964167442185629667}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 419d10cef225d1b40aee330d8c14fa89, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerBase: {fileID: 1964167442185436173}
+  footstepSound: {fileID: 8300000, guid: 5874ea4b76b02e94dbb8da2549d48579, type: 3}
+  movement: {fileID: 5862868341265315099}
 --- !u!1 &1964167442185630213 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 164084, guid: 659981ab97d9bb64990767ef5f931f7c, type: 3}
