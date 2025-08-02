@@ -53,7 +53,7 @@ public class LoopController : MonoBehaviour
                 loopTracker = Mathf.Clamp(loopTracker, 0, loopList.Count - 1);
             }
         }
-        else if(rb.velocity != Vector3.zero)
+        else if(loopList.Count == 0 || Vector3.Distance(rb.position, loopList[loopList.Count - 1].position) > 0.01f || Quaternion.Angle(rb.rotation, loopList[loopList.Count - 1].rotation) > 1f)
         {
             // Add to loop List if object is moving at all and not looping
             loopList.Add((rb.position, rb.velocity, rb.rotation));

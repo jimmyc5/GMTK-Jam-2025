@@ -7,7 +7,7 @@ public class PlayerGrab : MonoBehaviour
 {
     public Transform grabPosition;
 
-    private Rigidbody grabbedObject;
+    public Rigidbody grabbedObject;
 
     public float forceToThrow = 1f;
 
@@ -15,53 +15,52 @@ public class PlayerGrab : MonoBehaviour
 
     private float grabForce = 0.3f;
 
+    private bool goingToHands = false;
+
     public TwoBoneIKConstraint leftHandConstraint;
     public TwoBoneIKConstraint rightHandConstraint;
 
     public float handSpeed;
 
     public LayerMask layersToGrabFrom;
+    public Vector3 grabPositionChange;
+
+    private FixedJoint joint = null;
+    public float breakGrabForce = 100f;
+    public PhysicMaterial materialToApplyToHeldThings;
+    private Collider itemCollider = null;
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(1) || Input.GetKeyDown(KeyCode.E))
+        if (!goingToHands && (Input.GetMouseButtonDown(1) || Input.GetKeyDown(KeyCode.E)))
         {
             if (!grabbedObject)
             {
                 if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out var HitInfo, Vector3.Distance(Camera.main.transform.position, transform.position) + grabdistance, layersToGrabFrom))
                 {
-                    Rigidbody hitObject = HitInfo.collider.GetComponent<Rigidbody>();
+                    Rigidbody hitObject = HitInfo.collider.attachedRigidbody;
                     if (hitObject && !hitObject.isKinematic)
                     {
-                        if (!grabbedObject)
-                        {
-                            grabForce = 0f;
-                            grabbedObject = hitObject;
-                            hitObject.useGravity = false;
-                            hitObject.gameObject.layer = 17;
-                        }
+                        itemCollider = HitInfo.collider;
+                        grabbedObject = hitObject;
+                        grabForce = 0f;
+                        grabbedObject = hitObject;
+                        hitObject.useGravity = false;
+                        hitObject.gameObject.layer = 17;
+                        goingToHands = true;
                     }
                 }
             }
             else
             {
-                Vector3 direction = Camera.main.transform.forward;
-                if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out var HitInfo, 100.0f))
-                {
-                    direction = (HitInfo.point - grabbedObject.position).normalized;
-                }
-                else
-                {
-                    direction = (Camera.main.transform.position + Camera.main.transform.forward * 100f - grabbedObject.position).normalized;
-                }
-                grabbedObject.gameObject.layer = 0;
-                grabbedObject.useGravity = true;
-                grabbedObject.AddForce(direction * forceToThrow, ForceMode.Impulse);
-                grabbedObject = null;
+                breakJoint();
             }
         }
 
-        if (grabbedObject)
+
+
+
+        if (grabbedObject || goingToHands)
         {
             leftHandConstraint.weight = Mathf.Min(leftHandConstraint.weight + handSpeed * Time.deltaTime, 1f);
             rightHandConstraint.weight = Mathf.Min(rightHandConstraint.weight + handSpeed * Time.deltaTime, 1f);
@@ -73,9 +72,47 @@ public class PlayerGrab : MonoBehaviour
         }
     }
 
+    public void breakJoint()
+    {
+        Destroy(joint);
+        joint = null;
+        //movementScript.turnInDirectionOfMovement = true;
+        if (itemCollider && itemCollider.material == materialToApplyToHeldThings)
+        {
+            itemCollider.material = null;
+        }
+        grabbedObject = null;
+    }
+
+    // will be called when an excessive outside force breaks the joint between the player and what they're holding
+    private void OnJointBreak(float breakForce)
+    {
+        joint = null;
+        //movementScript.turnInDirectionOfMovement = true;
+        if (itemCollider)
+        {
+            itemCollider.material = null;
+        }
+        grabbedObject = null;
+    }
+
     private void FixedUpdate()
     {
-        if (grabbedObject)
+        if (goingToHands && Vector3.Distance(grabbedObject.position, grabPosition.position) < 0.01f)
+        {
+            joint = gameObject.AddComponent<FixedJoint>() as FixedJoint;
+            joint.connectedBody = grabbedObject;
+            joint.breakForce = breakGrabForce;
+            if (materialToApplyToHeldThings && materialToApplyToHeldThings.dynamicFriction < itemCollider.material.dynamicFriction)
+            {
+                itemCollider.material = materialToApplyToHeldThings;
+            }
+            grabbedObject.gameObject.layer = 0;
+            grabbedObject.useGravity = true;
+            goingToHands = false;
+        }
+
+        if (goingToHands && grabbedObject)
         {
             grabbedObject.velocity = grabForce * (grabPosition.position - grabbedObject.position) / Time.deltaTime;
             grabForce = Mathf.Min(grabForce + 0.05f, 1f);
