@@ -157,11 +157,15 @@ public class PlayerMovement : MonoBehaviour
 
         // Check the direction of the velocity relative to the orientation of the camera, update the animator...
         float desiredXAngle, desiredZAngle;
+        Quaternion GoalRot = Quaternion.RotateTowards(rb.rotation, rotationTF.rotation, Time.deltaTime * acceleration * 3f * Mathf.Min(Quaternion.Angle(rotationTF.rotation, rb.rotation), 50f));
+        float rotationSpeed = Quaternion.Angle(GoalRot, rb.rotation) / Time.deltaTime;
+        rotationSpeed *= (((GoalRot.eulerAngles.y - transform.rotation.eulerAngles.y) + 360f) % 360f) > 180.0f ? -1 : 1;
+        rb.MoveRotation( GoalRot);
+        anim.SetFloat("RotationSpeed", rotationSpeed);
         if (desiredVelocity != Vector3.zero)
         {
-            characterTF.rotation = Quaternion.RotateTowards(characterTF.rotation, rotationTF.rotation, Time.deltaTime * acceleration * 100);
             float angleFromForward = (Vector3.Angle(desiredVelocity, Vector3.forward) * Mathf.Sign(Vector3.Dot(Vector3.up, Vector3.Cross(desiredVelocity, Vector3.forward))) - 180f) * -1;
-            float orientationAngle = Mathf.Deg2Rad * ((angleFromForward - characterTF.rotation.eulerAngles.y + 360) % 360);
+            float orientationAngle = Mathf.Deg2Rad * ((angleFromForward - rb.rotation.eulerAngles.y + 360) % 360);
             desiredXAngle = -Mathf.Sin(orientationAngle);
             desiredZAngle = -Mathf.Cos(orientationAngle);
         }

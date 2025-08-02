@@ -147,7 +147,7 @@ MonoBehaviour:
   maxSpeed: 10
   acceleration: 1
   deccelerationConstant: 1
-  jumpForce: 15
+  jumpForce: 12
   groundMask:
     serializedVersion: 2
     m_Bits: 55
@@ -217,6 +217,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   grabPosition: {fileID: 2817493731963812453}
+  grabbedObject: {fileID: 0}
   forceToThrow: 1
   grabdistance: 2
   leftHandConstraint: {fileID: 5300484615982021428}
@@ -225,6 +226,9 @@ MonoBehaviour:
   layersToGrabFrom:
     serializedVersion: 2
     m_Bits: 1
+  grabPositionChange: {x: 0, y: 1, z: 0}
+  breakGrabForce: 1000
+  materialToApplyToHeldThings: {fileID: 0}
 --- !u!1 &1561630069637900169
 GameObject:
   m_ObjectHideFlags: 0

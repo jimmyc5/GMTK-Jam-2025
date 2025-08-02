@@ -8,67 +8,77 @@ public class PlayerCauseLoop : MonoBehaviour
     private Outline outline;
     private float timer;
     public LayerMask loopableMask;
+    private PlayerGrab playerGrabScript;
 
     // Start is called before the first frame update
     void Start()
     {
         col = null;
         outline = null;
-        timer = 0;
+        timer = 0.5f;
+        playerGrabScript = GetComponent<PlayerGrab>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (col != null && Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0))
         {
-            LoopController looper = col.GetComponent<LoopController>();
-            if (looper)
+            if(Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out var HitInfo, 100.0f, loopableMask))
             {
-                bool isLooping = looper.ToggleLoop();
-                if (isLooping)
+                if(HitInfo.rigidbody == playerGrabScript.grabbedObject)
                 {
-                    col.transform.parent.GetChild(1).GetComponent<ParticleSystem>().Play();
-                    outline.OutlineColor = GlobalColors.REJECT;
+                    return;
                 }
-                else
+                LoopController looper = HitInfo.collider.GetComponent<LoopController>();
+                if (looper)
                 {
-                    col.transform.parent.GetChild(1).GetComponent<ParticleSystem>().Stop();
-                    outline.OutlineColor = GlobalColors.ACCEPT;
+                    bool isLooping = looper.ToggleLoop();
+                    if (isLooping)
+                    {
+                        looper.transform.parent.GetChild(1).GetComponent<ParticleSystem>().Play();
+                        //outline.OutlineColor = GlobalColors.REJECT;
+                    }
+                    else
+                    {
+                        looper.transform.parent.GetChild(1).GetComponent<ParticleSystem>().Stop();
+                        // outline.OutlineColor = GlobalColors.ACCEPT;
+                    }
                 }
             }
+
         }
 
         // Disable object selection temporarily for lag purposes...
-        if (timer > 0)
-        {
-            timer -= Time.deltaTime;
-            return;
-        }
+        //if (timer > 0)
+        //{
+        //    timer -= Time.deltaTime;
+        //    return;
+        //}
 
-        if (!Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out var HitInfo, 100.0f, loopableMask))
-        {
-            disableOldOutline();
-            col = null;
-            outline = null;
-            return;
-        }
+        //if (!Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out var HitInfo, 100.0f, loopableMask))
+        //{
+        //    //disableOldOutline();
+        //    col = null;
+        //    outline = null;
+        //    return;
+        //}
 
-        if (HitInfo.collider.tag == "Loopable")
-        {
-            if(col != HitInfo.collider)
-            {
-                disableOldOutline();
-                col = HitInfo.collider;
-                enableNewOutline();
-            }
-        }
-        else
-        {
-            disableOldOutline();
-            col = null;
-            outline = null;
-        }
+        //if (HitInfo.collider.tag == "Loopable")
+        //{
+        //    if(col != HitInfo.collider)
+        //    {
+        //        disableOldOutline();
+        //        col = HitInfo.collider;
+        //        enableNewOutline();
+        //    }
+        //}
+        //else
+        //{
+        //    disableOldOutline();
+        //    col = null;
+        //    outline = null;
+        //}
     }
 
     void disableOldOutline()
