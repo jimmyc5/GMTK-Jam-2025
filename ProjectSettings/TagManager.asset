@@ -13,21 +13,21 @@ TagManager:
   - Water
   - UI
   - 
-  - 
+  - DefaultCameraIgnore
   - 
   - 
   - Player
   - 
   - 
   - 
-  - 
+  - PhysicsObject
   - 
   - 
   - GrabbedObjects
   - 
   - 
-  - 
-  - 
+  - ButtonTrigger
+  - ButtonPhysics
   - 
   - 
   - 

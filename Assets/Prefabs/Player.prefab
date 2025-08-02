@@ -150,7 +150,7 @@ MonoBehaviour:
   jumpForce: 12
   groundMask:
     serializedVersion: 2
-    m_Bits: 55
+    m_Bits: 16513
   groundCheckDistance: 1.2
   smallGravityForce: 25
   largeGravityForce: 40
@@ -203,7 +203,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   loopableMask:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 16384
 --- !u!114 &647165256269701752
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -225,10 +225,11 @@ MonoBehaviour:
   handSpeed: 6
   layersToGrabFrom:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 16384
   grabPositionChange: {x: 0, y: 1, z: 0}
   breakGrabForce: 1000
-  materialToApplyToHeldThings: {fileID: 0}
+  materialToApplyToHeldThings: {fileID: 13400000, guid: 6755da14ca4c2744b8a58eff19497530, type: 2}
+  materialToApplyToDroppedThings: {fileID: 13400000, guid: 87c3ab6e94936f240a9104441659b050, type: 2}
 --- !u!1 &1561630069637900169
 GameObject:
   m_ObjectHideFlags: 0

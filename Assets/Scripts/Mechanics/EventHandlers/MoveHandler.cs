@@ -10,11 +10,17 @@ public class MoveHandler : MonoBehaviour, EventHandler
     private Rigidbody rb;
     private bool moving;
     private float maxDistanceDelta;
+    [SerializeField] private bool destinationIsRelative;    // controls whether the supplied destination is relative to that starting position
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         originalPosition = rb.position;
+
+        if (destinationIsRelative)
+        {
+            destination = originalPosition + destination;
+        }
 
         float distance = Vector3.Distance(originalPosition, destination);
         maxDistanceDelta = distance / movementDuration / 50;
