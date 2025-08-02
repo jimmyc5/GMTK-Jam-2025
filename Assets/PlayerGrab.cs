@@ -28,6 +28,7 @@ public class PlayerGrab : MonoBehaviour
     private FixedJoint joint = null;
     public float breakGrabForce = 100f;
     public PhysicMaterial materialToApplyToHeldThings;
+    public PhysicMaterial materialToApplyToDroppedThings;
     private Collider itemCollider = null;
 
     void Update()
@@ -77,11 +78,9 @@ public class PlayerGrab : MonoBehaviour
         Destroy(joint);
         joint = null;
         //movementScript.turnInDirectionOfMovement = true;
-        if (itemCollider && itemCollider.material == materialToApplyToHeldThings)
-        {
-            itemCollider.material = null;
-        }
+        itemCollider.material = materialToApplyToDroppedThings;
         grabbedObject = null;
+        goingToHands = false;
     }
 
     // will be called when an excessive outside force breaks the joint between the player and what they're holding
@@ -89,11 +88,10 @@ public class PlayerGrab : MonoBehaviour
     {
         joint = null;
         //movementScript.turnInDirectionOfMovement = true;
-        if (itemCollider)
-        {
-            itemCollider.material = null;
-        }
+        itemCollider.material = materialToApplyToDroppedThings;
         grabbedObject = null;
+        goingToHands = false;
+        itemCollider = null;
     }
 
     private void FixedUpdate()
@@ -107,7 +105,7 @@ public class PlayerGrab : MonoBehaviour
             {
                 itemCollider.material = materialToApplyToHeldThings;
             }
-            grabbedObject.gameObject.layer = 0;
+            grabbedObject.gameObject.layer = 14;
             grabbedObject.useGravity = true;
             goingToHands = false;
         }

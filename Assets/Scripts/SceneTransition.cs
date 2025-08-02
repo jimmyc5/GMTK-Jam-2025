@@ -9,6 +9,7 @@ public class SceneTransition : MonoBehaviour
     public GameObject particles;
     private string sceneToTransitionTo = "";
     public bool lastScene = false;
+    public GameObject exitCamera;
     // Start is called before the first frame update
     void Start()
     {
@@ -42,6 +43,7 @@ public class SceneTransition : MonoBehaviour
                 GameObject obj = GameObject.Instantiate(particles, transform.position, Quaternion.identity);
                 ParticleSystem collectionPsComponent = obj.GetComponent<ParticleSystem>();
             }
+            exitCamera.SetActive(true);
             TransitionManager.instance.LoadLevel(sceneToTransitionTo, 0.5f);
             gameObject.SetActive(false);
         }
