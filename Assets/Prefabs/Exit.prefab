@@ -813,7 +813,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89c5b8e420af5dc4eaa11a48e791451e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  entrySound: {fileID: 0}
+  entrySound: {fileID: 8300000, guid: 03b32d0ad7907fa4295fc1eed2bed901, type: 3}
   particles: {fileID: 0}
   lastScene: 0
   exitCamera: {fileID: 7304927679949928154}

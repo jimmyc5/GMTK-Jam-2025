@@ -66,9 +66,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57e3ecd87bd6197408207c9841d20b32, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  collisionCount: 0
   buttonSerialized: {fileID: 6233984091340374315}
+  layersToInteractWith:
+    serializedVersion: 2
+    m_Bits: 148480
   eventListenersSerialized:
   - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  pointLight: {fileID: 0}
+  buttonSound: {fileID: 8300000, guid: 931363085862252449ae12f7f5c75b8e, type: 3}
 --- !u!1 &6233984091340374315
 GameObject:
   m_ObjectHideFlags: 0
@@ -219,3 +227,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   movementDuration: 0.2
   destination: {x: 0, y: -0.2, z: 0}
+  destinationIsRelative: 0
+  volumeGain: 0

@@ -229,7 +229,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Walk Tree
-  m_Speed: 0.8
+  m_Speed: 1.2
   m_CycleOffset: 0
   m_Transitions: []
   m_StateMachineBehaviours: []
@@ -266,7 +266,7 @@ BlendTree:
   - serializedVersion: 2
     m_Motion: {fileID: 3094330708855449807, guid: b7ff898919f115a4095d79af0129756f, type: 3}
     m_Threshold: 0.125
-    m_Position: {x: 0, y: -1}
+    m_Position: {x: 0, y: -0.75}
     m_TimeScale: 1
     m_CycleOffset: 0
     m_DirectBlendParameter: VelocityX
@@ -274,7 +274,7 @@ BlendTree:
   - serializedVersion: 2
     m_Motion: {fileID: 3094330708855449807, guid: 1f15e0650d22c9d48befae3bb44bc43d, type: 3}
     m_Threshold: 0.25
-    m_Position: {x: -0.7, y: -0.7}
+    m_Position: {x: -0.525, y: -0.525}
     m_TimeScale: 1
     m_CycleOffset: 0
     m_DirectBlendParameter: VelocityX
@@ -282,7 +282,7 @@ BlendTree:
   - serializedVersion: 2
     m_Motion: {fileID: 3094330708855449807, guid: 1067eff693e77f143bc9982fef2aa0a1, type: 3}
     m_Threshold: 0.375
-    m_Position: {x: 0.7, y: -0.7}
+    m_Position: {x: 0.525, y: -0.525}
     m_TimeScale: 1
     m_CycleOffset: 0
     m_DirectBlendParameter: VelocityX
@@ -290,7 +290,7 @@ BlendTree:
   - serializedVersion: 2
     m_Motion: {fileID: 3094330708855449807, guid: 40786e67f3ceb094b9c00543f295cb5f, type: 3}
     m_Threshold: 0.5
-    m_Position: {x: 0, y: 1}
+    m_Position: {x: 0, y: 0.75}
     m_TimeScale: 1
     m_CycleOffset: 0
     m_DirectBlendParameter: VelocityX
@@ -298,7 +298,7 @@ BlendTree:
   - serializedVersion: 2
     m_Motion: {fileID: 3094330708855449807, guid: cdb2264de10c42b4799822b736b5de9c, type: 3}
     m_Threshold: 0.625
-    m_Position: {x: -0.7, y: 0.7}
+    m_Position: {x: -0.525, y: 0.525}
     m_TimeScale: 1
     m_CycleOffset: 0
     m_DirectBlendParameter: VelocityX
@@ -306,7 +306,7 @@ BlendTree:
   - serializedVersion: 2
     m_Motion: {fileID: 3094330708855449807, guid: 5088dccb2ba6bc8478f1dc0919d3e8cd, type: 3}
     m_Threshold: 0.75
-    m_Position: {x: 0.7, y: 0.7}
+    m_Position: {x: 0.525, y: 0.525}
     m_TimeScale: 1
     m_CycleOffset: 0
     m_DirectBlendParameter: VelocityX
@@ -314,7 +314,7 @@ BlendTree:
   - serializedVersion: 2
     m_Motion: {fileID: 3094330708855449807, guid: 435a4728904deaf41a2ea8928e6c2c35, type: 3}
     m_Threshold: 0.875
-    m_Position: {x: -1, y: 0}
+    m_Position: {x: -0.75, y: 0}
     m_TimeScale: 1
     m_CycleOffset: 0
     m_DirectBlendParameter: VelocityX
@@ -322,7 +322,7 @@ BlendTree:
   - serializedVersion: 2
     m_Motion: {fileID: 3094330708855449807, guid: e4554e344c29aeb4087271d927e625f2, type: 3}
     m_Threshold: 1
-    m_Position: {x: 1, y: 0}
+    m_Position: {x: 0.75, y: 0}
     m_TimeScale: 1
     m_CycleOffset: 0
     m_DirectBlendParameter: VelocityX

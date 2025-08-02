@@ -16,6 +16,10 @@ public class ButtonEvent : MonoBehaviour
 
     public Light pointLight;
 
+    public AudioClip buttonSound;
+    private float lastSFXTime = 0f;
+    private float SFXCooldown = 0.1f;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -44,6 +48,11 @@ public class ButtonEvent : MonoBehaviour
                 }
                 if (pointLight)
                     pointLight.intensity = 1f;
+                if (SoundManager.instance && Time.time > lastSFXTime + SFXCooldown)
+                {
+                    SoundManager.instance.PlaySoundClip(buttonSound, transform.position, 0.5f, 1.2f);
+                    lastSFXTime = Time.time;
+                }
             }
             collisionCount++;
         }
@@ -64,6 +73,11 @@ public class ButtonEvent : MonoBehaviour
                 }
                 if (pointLight)
                     pointLight.intensity = 0.5f;
+                if (SoundManager.instance && Time.time > lastSFXTime + SFXCooldown)
+                {
+                    SoundManager.instance.PlaySoundClip(buttonSound, transform.position, 0.5f, 0.8f);
+                    lastSFXTime = Time.time;
+                }
             }
         }
     }
