@@ -49,6 +49,8 @@ public class PlayerMovement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        GlobalParameters.isDead = false;
+
         rb = GetComponent<Rigidbody>();
         moveDir = new Vector3(0, 0, 0);
         col = GetComponent<CapsuleCollider>();
@@ -67,6 +69,9 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (GlobalParameters.isDead)
+            return;
+
         float horizontal = Input.GetAxisRaw("Horizontal");
         float vertical = Input.GetAxisRaw("Vertical");
         Vector3 direction = new Vector3(horizontal, 0f, vertical).normalized;
@@ -135,6 +140,12 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (GlobalParameters.isDead)
+        {
+            rb.velocity = Vector3.zero;
+            return;
+        }
+
         updateGroundedInfo();
         // move/rotate
 
