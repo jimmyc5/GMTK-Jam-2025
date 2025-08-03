@@ -151,4 +151,9 @@ public class LoopController : MonoBehaviour
         }
         return objectIsLooping;
     }
+
+    public bool getWasKinematic()
+    {
+        return wasKinematic;
+    }
 }

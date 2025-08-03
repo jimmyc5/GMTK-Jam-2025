@@ -48,7 +48,18 @@ public class PlayerGrab : MonoBehaviour
                 if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out var HitInfo, Vector3.Distance(Camera.main.transform.position, transform.position) + grabdistance, layersToGrabFrom))
                 {
                     Rigidbody hitObject = HitInfo.collider.attachedRigidbody;
-                    if (hitObject && !hitObject.isKinematic)
+                    bool canPickupLoopingObject = false;
+                    if(hitObject && GlobalLoopList.RBList.Contains(hitObject))
+                    {
+                        LoopController lc = hitObject.gameObject.GetComponent<LoopController>();
+                        if(!lc.getWasKinematic())
+                        {
+                            canPickupLoopingObject = true;
+                            lc.endLoop();
+                            hitObject.transform.parent.GetChild(1).GetComponent<ParticleSystem>().Stop();
+                        }
+                    }
+                    if (hitObject && (!hitObject.isKinematic || canPickupLoopingObject))
                     {
                         itemCollider = HitInfo.collider;
                         grabbedObject = hitObject;
