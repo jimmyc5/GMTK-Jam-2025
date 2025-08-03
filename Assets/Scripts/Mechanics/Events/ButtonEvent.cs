@@ -14,7 +14,7 @@ public class ButtonEvent : MonoBehaviour
     [SerializeField] GameObject[] eventListenersSerialized;
     List<EventHandler> eventListeners;
 
-    public Light pointLight;
+    //public Light pointLight;
 
     public AudioClip buttonSound;
     private float lastSFXTime = 0f;
@@ -46,8 +46,8 @@ public class ButtonEvent : MonoBehaviour
                 {
                     e.activate();
                 }
-                if (pointLight)
-                    pointLight.intensity = 1f;
+                //if (pointLight)
+                //    pointLight.intensity = 1f;
                 if (SoundManager.instance && Time.time > lastSFXTime + SFXCooldown)
                 {
                     SoundManager.instance.PlaySoundClip(buttonSound, transform.position, 0.5f, 1.2f);
@@ -71,8 +71,8 @@ public class ButtonEvent : MonoBehaviour
                 {
                     e.deactivate();
                 }
-                if (pointLight)
-                    pointLight.intensity = 0.5f;
+                //if (pointLight)
+                //    pointLight.intensity = 0.5f;
                 if (SoundManager.instance && Time.time > lastSFXTime + SFXCooldown)
                 {
                     SoundManager.instance.PlaySoundClip(buttonSound, transform.position, 0.5f, 0.8f);

@@ -10,6 +10,8 @@ public class RotatingMilk : MonoBehaviour
     [SerializeField] GameObject gameOver;
     float rotation = 0f;
 
+    public AudioClip winSound;
+
     // Update is called once per frame
     void FixedUpdate()
     {
@@ -26,6 +28,7 @@ public class RotatingMilk : MonoBehaviour
 
         if (col.tag == "Player")
         {
+            SoundManager.instance.PlaySoundClip(winSound, transform.position, 0.25f);
             GlobalParameters.isDead = true;
 
             Transform playerModel = col.transform.GetChild(0);

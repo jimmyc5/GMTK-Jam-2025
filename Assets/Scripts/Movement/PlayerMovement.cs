@@ -223,7 +223,12 @@ public class PlayerMovement : MonoBehaviour
             }
         }
 
-        if (isJumping && !jumpHeld)
+        if (isGrounded)
+        {
+            anim.SetBool("isFalling", false);
+        }
+
+        if (isJumping && !jumpHeld && !isGrounded)
         {
             isJumping = false;
             anim.SetBool("isFalling", true);
