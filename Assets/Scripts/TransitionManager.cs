@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class TransitionManager : MonoBehaviour
 {
     public static TransitionManager instance;
+    bool restarting = false;
 
     private void Awake()
     {
@@ -22,6 +23,15 @@ public class TransitionManager : MonoBehaviour
         //This is the code that carries the TM over between scenes
         DontDestroyOnLoad(gameObject);
 
+    }
+
+    public void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.R) && !restarting)
+        {
+            RestartScene();
+            restarting = true;
+        }
     }
 
     public static string GetSceneNameByBuildIndex(int buildIndex)
