@@ -45,7 +45,7 @@ public class MoveHandler : MonoBehaviour, EventHandler
         Vector3 difference = new Vector3(0, 0, 0);
         if(moving)
         {
-            if(Vector3.Distance(rb.position, destination) > 0.05f)
+            if (Vector3.Distance(rb.position, destination) > 0.05f)
             {
                 Vector3 newPosition = Vector3.MoveTowards(rb.position, destination, maxDistanceDelta);
                 difference = newPosition - rb.position;
