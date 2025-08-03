@@ -11,6 +11,8 @@ public class RotatingMilk : MonoBehaviour
     float rotation = 0f;
 
     public AudioClip winSound;
+    public AudioSource quietSound1;
+    public AudioSource quietSound2;
 
     // Update is called once per frame
     void FixedUpdate()
@@ -30,6 +32,9 @@ public class RotatingMilk : MonoBehaviour
         {
             SoundManager.instance.PlaySoundClip(winSound, transform.position, 0.25f);
             GlobalParameters.isDead = true;
+
+            quietSound1.mute = true;
+            quietSound2.mute = true;
 
             Transform playerModel = col.transform.GetChild(0);
             playerModel.GetComponent<Animator>().enabled = false;

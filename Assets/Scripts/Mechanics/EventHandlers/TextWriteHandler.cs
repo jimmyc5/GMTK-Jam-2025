@@ -21,6 +21,8 @@ public class TextWriteHandler : MonoBehaviour, EventHandler
     private float delayTimer = 0;
     private int tracker = 0;
 
+    public AudioClip continueSound;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -39,7 +41,12 @@ public class TextWriteHandler : MonoBehaviour, EventHandler
             if(Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.Return))
             {
                 if (continueEvent != null)
+                {
+                    if(continueSound)
+                        SoundManager.instance.PlaySoundClip(continueSound, transform.position, 0.25f);
                     continueEvent.activate();
+                }
+                    
                 continueCursor.SetActive(false);
                 gameObject.SetActive(false);
             }

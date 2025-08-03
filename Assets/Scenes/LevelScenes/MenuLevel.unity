@@ -886,6 +886,7 @@ MonoBehaviour:
   typewriterEffect: 1
   delayTime: 0
   requireInput: 1
+  continueSound: {fileID: 8300000, guid: 931363085862252449ae12f7f5c75b8e, type: 3}
 --- !u!1 &225191826
 GameObject:
   m_ObjectHideFlags: 0
@@ -2943,6 +2944,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 767497205}
+        m_TargetAssemblyTypeName: UnityEngine.AudioSource, UnityEngine
+        m_MethodName: Play
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &696836564
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3483,6 +3496,107 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 27ac44c94d7f6e741a7e270ce72ccd9b, type: 3}
+--- !u!1 &767497201 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2884083712079104231, guid: 0a6ad2b75f83232419ca57c334d1c043, type: 3}
+  m_PrefabInstance: {fileID: 1483716649}
+  m_PrefabAsset: {fileID: 0}
+--- !u!82 &767497205
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 767497201}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: 931363085862252449ae12f7f5c75b8e, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: 0.749
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!4 &769834319 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 411366, guid: 74231780cc79e3a45a60bfadd89b76d5, type: 3}
@@ -3964,6 +4078,7 @@ MonoBehaviour:
   typewriterEffect: 1
   delayTime: 0
   requireInput: 1
+  continueSound: {fileID: 8300000, guid: 931363085862252449ae12f7f5c75b8e, type: 3}
 --- !u!1 &950196552
 GameObject:
   m_ObjectHideFlags: 0
@@ -4706,6 +4821,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 767497205}
+        m_TargetAssemblyTypeName: UnityEngine.AudioSource, UnityEngine
+        m_MethodName: Play
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1076499168
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4864,6 +4991,7 @@ MonoBehaviour:
   typewriterEffect: 1
   delayTime: 0
   requireInput: 1
+  continueSound: {fileID: 8300000, guid: 931363085862252449ae12f7f5c75b8e, type: 3}
 --- !u!1 &1111445544
 GameObject:
   m_ObjectHideFlags: 0
@@ -4915,6 +5043,7 @@ MonoBehaviour:
   typewriterEffect: 1
   delayTime: 0
   requireInput: 1
+  continueSound: {fileID: 8300000, guid: 931363085862252449ae12f7f5c75b8e, type: 3}
 --- !u!1001 &1125245056
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6269,6 +6398,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 767497205}
+        m_TargetAssemblyTypeName: UnityEngine.AudioSource, UnityEngine
+        m_MethodName: Play
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1392407260
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6896,7 +7037,10 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4016846629245307627, guid: 0a6ad2b75f83232419ca57c334d1c043, type: 3}
       insertIndex: -1
       addedObject: {fileID: 648702248}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2884083712079104231, guid: 0a6ad2b75f83232419ca57c334d1c043, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 767497205}
   m_SourcePrefab: {fileID: 100100000, guid: 0a6ad2b75f83232419ca57c334d1c043, type: 3}
 --- !u!1001 &1490862524
 PrefabInstance:
@@ -7777,7 +7921,7 @@ MonoBehaviour:
   m_BlendUpdateMethod: 1
   m_DefaultBlend:
     m_Style: 1
-    m_Time: 2
+    m_Time: 0
     m_CustomCurve:
       serializedVersion: 2
       m_Curve: []
@@ -8220,6 +8364,7 @@ MonoBehaviour:
   typewriterEffect: 1
   delayTime: 0
   requireInput: 1
+  continueSound: {fileID: 8300000, guid: 931363085862252449ae12f7f5c75b8e, type: 3}
 --- !u!1001 &1820885860
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8629,6 +8774,7 @@ MonoBehaviour:
   typewriterEffect: 1
   delayTime: 0
   requireInput: 1
+  continueSound: {fileID: 8300000, guid: 931363085862252449ae12f7f5c75b8e, type: 3}
 --- !u!4 &1927133842 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 410506, guid: 67e9d0b0d7ee4da4d82f258ee2471dec, type: 3}
@@ -9192,6 +9338,7 @@ MonoBehaviour:
   typewriterEffect: 1
   delayTime: 0
   requireInput: 1
+  continueSound: {fileID: 8300000, guid: 931363085862252449ae12f7f5c75b8e, type: 3}
 --- !u!4 &2109077728 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 456030, guid: 48e043463d920714684df4f66731eaa4, type: 3}

@@ -25,9 +25,14 @@ public class PlayerCauseLoop : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (canCauseLoop && Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0))
         {
-            if(Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out var HitInfo, 100.0f, loopableMask))
+            if (!GlobalParameters.isDead)
+            {
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
+            }
+            if (canCauseLoop && Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out var HitInfo, 100.0f, loopableMask))
             {
                 if(HitInfo.rigidbody == playerGrabScript.grabbedObject)
                 {
@@ -51,6 +56,12 @@ public class PlayerCauseLoop : MonoBehaviour
                 }
             }
 
+        }
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
         }
 
         // Disable object selection temporarily for lag purposes...
