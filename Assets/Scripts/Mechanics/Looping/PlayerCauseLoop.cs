@@ -9,6 +9,7 @@ public class PlayerCauseLoop : MonoBehaviour
     private float timer;
     public LayerMask loopableMask;
     private PlayerGrab playerGrabScript;
+    public bool canCauseLoop = true;
 
     // Start is called before the first frame update
     void Start()

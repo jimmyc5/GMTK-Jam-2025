@@ -70,6 +70,7 @@ public class PlayerMovement : MonoBehaviour
         anim = characterTF.GetComponent<Animator>();
         curXAngle = 0;
         curZAngle = 0;
+        lastSFXTime = Time.time;
     }
 
     // Update is called once per frame
