@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
+using TMPro;
 
 public class PlayerGrab : MonoBehaviour
 {
@@ -35,6 +36,9 @@ public class PlayerGrab : MonoBehaviour
 
     public AudioClip grabSound;
 
+    public TMP_Text tutorialText;
+    private bool tutorialDone = false;
+
     void Update()
     {
         if (!goingToHands && (Input.GetMouseButtonDown(1) || Input.GetKeyDown(KeyCode.E)))
@@ -54,12 +58,20 @@ public class PlayerGrab : MonoBehaviour
                         hitObject.gameObject.layer = 17;
                         goingToHands = true;
                         SoundManager.instance.PlaySoundClip(grabSound, transform.position, 0.7f, Random.Range(1.1f,1.2f));
+                        if(tutorialText && tutorialText.isActiveAndEnabled)
+                        {
+                            tutorialText.text = "Press E again to drop boxes";
+                        }
                     }
                 }
             }
             else
             {
                 breakJoint();
+                if (tutorialText && tutorialText.isActiveAndEnabled)
+                {
+                    tutorialText.gameObject.SetActive(false);
+                }
             }
         }
 
