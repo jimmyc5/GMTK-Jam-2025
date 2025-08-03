@@ -4989,6 +4989,7 @@ MonoBehaviour:
   loopTestSwitch: 0
   LoopSFXSource: {fileID: 6013714568818284196}
   LoopForwardsSFXSource: {fileID: 3774176621911493068}
+  startingVolume: 0.356
   volumeGain: 0.01
   loopStartSoundClip: {fileID: 8300000, guid: 8a2eefe7147b07c4f861ec445e45e1bd, type: 3}
 --- !u!54 &4409410510702203553
@@ -5061,7 +5062,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: c6d4c45fc492be24281fa5c8bcc2a361, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.356
+  m_Volume: 0
   m_Pitch: 0.7
   Loop: 1
   Mute: 0
@@ -5157,7 +5158,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: d44051f98652e514fa7e9b17439db2eb, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.356
+  m_Volume: 0
   m_Pitch: 0.7
   Loop: 1
   Mute: 0

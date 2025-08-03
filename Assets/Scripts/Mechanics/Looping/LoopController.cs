@@ -17,19 +17,18 @@ public class LoopController : MonoBehaviour
 
     public AudioSource LoopSFXSource;
     public AudioSource LoopForwardsSFXSource;
-    private float startingVolume;
+    public float startingVolume;
     public float volumeGain;
 
     public AudioClip loopStartSoundClip;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         loopList = new List<(Vector3 position, Vector3 velocity, Quaternion rotation)>();
         rb = GetComponent<Rigidbody>();
         if (LoopSFXSource)
         {
-            startingVolume = LoopSFXSource.volume;
             LoopSFXSource.volume = 0f;
             LoopForwardsSFXSource.volume = 0f;
         }

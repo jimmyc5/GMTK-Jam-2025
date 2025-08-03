@@ -10,6 +10,7 @@ public class PlayerCauseLoop : MonoBehaviour
     public LayerMask loopableMask;
     private PlayerGrab playerGrabScript;
     public bool canCauseLoop = true;
+    public GameObject watchInHand;
 
     // Start is called before the first frame update
     void Start()
@@ -18,12 +19,13 @@ public class PlayerCauseLoop : MonoBehaviour
         outline = null;
         timer = 0.5f;
         playerGrabScript = GetComponent<PlayerGrab>();
+        watchInHand.SetActive(canCauseLoop);
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (canCauseLoop && Input.GetMouseButtonDown(0))
         {
             if(Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out var HitInfo, 100.0f, loopableMask))
             {
@@ -96,5 +98,11 @@ public class PlayerCauseLoop : MonoBehaviour
         outline = col.GetComponent<Outline>();
         outline.enabled = true;
         timer = 0.25f;
+    }
+
+    public void StartLoopable()
+    {
+        canCauseLoop = true;
+        watchInHand.SetActive(true);
     }
 }
