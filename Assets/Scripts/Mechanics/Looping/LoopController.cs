@@ -70,7 +70,7 @@ public class LoopController : MonoBehaviour
             }
 
         }
-        else if(loopList.Count == 0 || Vector3.Distance(rb.position, loopList[loopList.Count - 1].position) > 0.01f || Quaternion.Angle(rb.rotation, loopList[loopList.Count - 1].rotation) > 1f)
+        else if(checkIfShouldLog(rb.position, rb.velocity,rb.rotation))
         {
             // Add to loop List if object is moving at all and not looping
             loopList.Add((rb.position, rb.velocity, rb.rotation));
@@ -97,6 +97,23 @@ public class LoopController : MonoBehaviour
             }
             loopTestSwitch = false;
         }
+    }
+
+    // check if you should add to list (if same as last 30 entries, stop adding)
+    private bool checkIfShouldLog(Vector3 position, Vector3 velocity, Quaternion rotation)
+    {
+        if(loopList.Count < 30)
+        {
+            return true;
+        }
+        for(int i=loopList.Count - 1; i > 0 && i > loopList.Count - 30; i--)
+        {
+            if(Vector3.Distance(loopList[i].position, position) > 0.01f || Vector3.Distance(loopList[i].velocity, velocity) > 0.01f || Quaternion.Angle(loopList[i].rotation, rotation) > 1f)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     // Loop will always start by going backwards...

@@ -13,7 +13,7 @@ public class MoveHandler : MonoBehaviour, EventHandler
     [SerializeField] private bool destinationIsRelative;    // controls whether the supplied destination is relative to that starting position
 
     private AudioSource movingSound;
-    private float startingVolume;
+    public float startingVolume;
     public float volumeGain;
 
     void Start()
@@ -31,7 +31,6 @@ public class MoveHandler : MonoBehaviour, EventHandler
         movingSound = GetComponent<AudioSource>();
         if (movingSound)
         {
-            startingVolume = movingSound.volume;
             movingSound.volume = 0f;
         }
 

@@ -487,6 +487,7 @@ MonoBehaviour:
   movementDuration: 0.8
   destination: {x: 0, y: -4.8, z: 0}
   destinationIsRelative: 1
+  startingVolume: 0.815
   volumeGain: 0.001
 --- !u!82 &6552220245132120435
 AudioSource:
@@ -500,7 +501,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 82951d9ead70c33418da0f81ee04f74c, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.815
+  m_Volume: 0
   m_Pitch: 0.78
   Loop: 1
   Mute: 0
