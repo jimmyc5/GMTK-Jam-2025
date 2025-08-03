@@ -2483,6 +2483,10 @@ PrefabInstance:
       propertyPath: watchInHand
       value: 
       objectReference: {fileID: 40542813}
+    - target: {fileID: 2267281406705040083, guid: 06a9f02ac4043784082ac9d9515dae13, type: 3}
+      propertyPath: canCauseLoop
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6451686234484185411, guid: 06a9f02ac4043784082ac9d9515dae13, type: 3}
       propertyPath: m_LocalPosition.x
       value: -17.829945
