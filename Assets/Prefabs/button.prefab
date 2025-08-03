@@ -83,7 +83,7 @@ Light:
     serializedVersion: 2
     m_Bits: 4294967295
   m_RenderingLayerMask: 1
-  m_Lightmapping: 4
+  m_Lightmapping: 2
   m_LightShadowCasterMode: 0
   m_AreaSize: {x: 1, y: 1}
   m_BounceIntensity: 0
@@ -279,6 +279,7 @@ MonoBehaviour:
   movementDuration: 0.2
   destination: {x: 0, y: -0.2, z: 0}
   destinationIsRelative: 1
+  startingVolume: 0
   volumeGain: 0
 --- !u!1 &4837278790176645796
 GameObject:

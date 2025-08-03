@@ -6,7 +6,6 @@ using UnityEngine.SceneManagement;
 public class TransitionManager : MonoBehaviour
 {
     public static TransitionManager instance;
-    bool restarting = false;
 
     private void Awake()
     {
@@ -27,10 +26,9 @@ public class TransitionManager : MonoBehaviour
 
     public void Update()
     {
-        if (Input.GetKeyDown(KeyCode.R) && !restarting)
+        if (Input.GetKeyDown(KeyCode.R))
         {
             RestartScene();
-            restarting = true;
         }
     }
 
