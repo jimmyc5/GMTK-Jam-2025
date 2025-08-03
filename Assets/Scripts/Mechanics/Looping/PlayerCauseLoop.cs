@@ -36,6 +36,7 @@ public class PlayerCauseLoop : MonoBehaviour
                     bool isLooping = looper.ToggleLoop();
                     if (isLooping)
                     {
+                        Debug.Log("HERE");
                         looper.transform.parent.GetChild(1).GetComponent<ParticleSystem>().Play();
                         //outline.OutlineColor = GlobalColors.REJECT;
                     }
